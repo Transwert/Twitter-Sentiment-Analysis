@@ -73,7 +73,7 @@ def bulkFeatureExtraction(file):
     featureList = []
     tweets = []
 
-    inpTweets = list(inpTweets)
+    #inpTweets = list(inpTweets)
     [tweet.decode('utf-8') for tweet in inpTweets]
 
     for row in inpTweets:

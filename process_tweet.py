@@ -72,6 +72,10 @@ def bulkFeatureExtraction(file):
 	for i in range (0, inpTweets[0].length):
 		tweet = row[0][i]
 		sentiment = row[1][i]
+		processedTweet = processTweet(tweet)
+	    featureVector = getFeatureVector(processedTweet, stopWords)
+	    featureList.extend(featureVector)
+	    tweets.append((featureVector, sentiment));
 
 
 

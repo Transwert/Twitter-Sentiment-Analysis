@@ -1,10 +1,6 @@
 import tweepy
 import csv
 
-key = 'UoOP5xpzbFqCLm3WKEq6VqhPY'
-secret = 'RUPDwPP4cdYvCkfkuOZcX4OofCXcsZRcXxN6BUIoBkYTddVdCj'
-access = '715768598367715329-6QKfskhjRLrC6zmoIHllvL7SXISd522'
-a_secret = 'RouBCcG7hHI4eA0MoaRtiGfX2nvFKoNEvrrAoczhttTGc'
 
 auth = tweepy.OAuthHandler( key, secret)
 auth.set_access_token( access, a_secret)

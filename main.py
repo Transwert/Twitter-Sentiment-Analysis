@@ -6,12 +6,7 @@ import get_all_tweets as gett
 import get_followers as getf
 
 
-key = 'UoOP5xpzbFqCLm3WKEq6VqhPY'
-secret = 'RUPDwPP4cdYvCkfkuOZcX4OofCXcsZRcXxN6BUIoBkYTddVdCj'
-access = '715768598367715329-6QKfskhjRLrC6zmoIHllvL7SXISd522'
-a_secret = 'RouBCcG7hHI4eA0MoaRtiGfX2nvFKoNEvrrAoczhttTGc'
-
-auth = tweepy.OAuthHandler( key, secret)
+auth = tweepy.OAuthHandler(key, secret)
 auth.set_access_token( access, a_secret)
 auth = tweepy.OAuthHandler(key, secret)
 auth.set_access_token(access, a_secret)
@@ -26,7 +21,7 @@ def get_site(media):
 		urls = [s.decode('utf-8') for s in urls]
 		#creates a csv file with all the links that were found in the nytimes feed
 		gett.list_to_csv(urls, screen_name) 
-get_site(['nytimes', 'CNNPolitics'])
+#get_site(['nytimes', 'CNNPolitics'])
 
 # function that returns a list with all the twitter posts of the followers of the account specified 
 # by screen_name
@@ -39,7 +34,14 @@ def get_follower_statuses(screen_name):
 			follower_tweets.extend(gett.get_all_tweets(person.screen_name))
 	gett.list_to_csv(follower_tweets, screen_name) 
 
+#create csv files with tweets from followers of Doanld Trump, Bernie Sanders, 
+# Hillary Clinton, Ted Cruz and John Kasich
 
+get_follower_statuses('realDonaldTrump')
+get_follower_statuses('SenSanders')
+get_follower_statuses('HillaryClinton')
+get_follower_statuses('tedcruz')
+get_follower_statuses('JohnKasich')
 
 
 

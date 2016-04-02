@@ -1,6 +1,10 @@
 import tweepy
 import csv
 
+key = 'UoOP5xpzbFqCLm3WKEq6VqhPY'
+secret = 'RUPDwPP4cdYvCkfkuOZcX4OofCXcsZRcXxN6BUIoBkYTddVdCj'
+access = '715768598367715329-6QKfskhjRLrC6zmoIHllvL7SXISd522'
+a_secret = 'RouBCcG7hHI4eA0MoaRtiGfX2nvFKoNEvrrAoczhttTGc'
 
 auth = tweepy.OAuthHandler( key, secret)
 auth.set_access_token( access, a_secret)
@@ -21,7 +25,7 @@ def get_all_tweets(screen_name):
 
 	last_tweet = tweets[-1].id - 1
 	count = 0
-	while len(new_tweets) > 0 and count < 2: # change 2 to 10
+	while len(new_tweets) > 0 and count < 10: 
 		new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=last_tweet)
 		tweets.extend(new_tweets)
 		last_tweet = tweets[-1].id - 1
@@ -56,12 +60,9 @@ def split_text(tweets):
 			words.append(j)
 	return words 
 
-
-
-
-# converts the list from get_all_tweets to a csv
-def list_to_csv(lst):
-	out = open("tweets.csv", 'w')
+# converts the list of strings and puts them in a csv file
+def list_to_csv(lst, name):
+	out = open(name + "_tweets.csv", 'w')
 	writer = csv.writer(out, dialect='excel')
 	writer.writerow(lst)
 

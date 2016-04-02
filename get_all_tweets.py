@@ -31,5 +31,4 @@ def list_to_csv(lst):
 	writer = csv.writer(out, dialect='excel')
 	writer.writerow(lst)
 
-lst  = get_all_tweets('J_tsar')
-list_to_csv(lst)
+

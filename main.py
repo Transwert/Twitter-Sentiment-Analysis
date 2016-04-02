@@ -30,16 +30,15 @@ get_site(['nytimes', 'CNNPolitics'])
 
 # function that returns a list with all the twitter posts of the followers of the account specified 
 # by screen_name
-# status: To be tested 
+# status: Works
 def get_follower_statuses(screen_name):
 	follower_tweets = []
 	followers = getf.get_followers(screen_name)
 	for person in followers:
 		if person.protected != True:
 			follower_tweets.extend(gett.get_all_tweets(person.screen_name))
-	return follower_tweets
+	gett.list_to_csv(follower_tweets, screen_name) 
 
-print (get_follower_statuses('voikos1'))
 
 
 

@@ -1,8 +1,9 @@
 import tweepy
 import csv
-
+import operator
 
 #override tweepy.StreamListener to add logic to on_status
+
 
 auth = tweepy.OAuthHandler( key, secret)
 auth.set_access_token( access, a_secret)
@@ -10,23 +11,31 @@ auth = tweepy.OAuthHandler(key, secret)
 auth.set_access_token(access, a_secret)
 api = tweepy.API(auth)
 
-tweets = []
-media_outlets = ['nytimes']
+def split_text(tweet):
+	sentence = tweet.split()
+	return sentence 
 
-for _ in range(0,10):
-	trump = []
-	new_tweets = api.user_timeline(screen_name = 'FoxNews',count=200)
+def get_trump():
+	media = ['nytimes', 'CNN', 'cnnbrk', 'CNNPolitics', 'cnni']
+	tweets = []
+	for m in media:
+		new_tweets = api.user_timeline(screen_name = m,count=200)
+		for i in new_tweets:
+			if "Trump" in i.text or "trump" in i.text:
+				tweets.append(i)
+	print(len(tweets))
+	return tweets
 
-	trump.extend(new_tweets)
+trump_data = get_trump()
 
-	for i in trump:
-		if not "Trump" in i.text:
-			trump.remove(i)
+d = {}
 
-with open("fox_news_trump.csv", 'wb') as outcsv: 
-	writer = csv.writer(outcsv)
-	for val in trump:
-		writer.writerow([1])
+for tweet in trump_data:
+d = sorted(d.items(), key=lambda x: (-x[1], x[0]))
+print(d)
+
+
+
 
 
 

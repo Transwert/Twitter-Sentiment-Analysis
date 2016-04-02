@@ -1,5 +1,6 @@
 import re
 from langdetect import detect
+import csv
 
 def filterEnglish(lists): #filters out words that are not in English
 	return [tweet for tweet in lists if detect(tweet) == 'en']
@@ -27,10 +28,10 @@ def handleRepeatedLetters(s):
     return pattern.sub(r"\1\1", s)
 
 def stopWords(file):
-	stopWords = []
+    stopWords = []
     stopWords.append('AT_USER')
     stopWords.append('URL')
-    fp = open(stopWordListFileName, 'r')
+    fp = open(file, 'r')
     for line in fp.readline():
         word = line.strip()
         stopWords.append(word)
@@ -57,30 +58,40 @@ def getFeatureVector(tweet):
 
 
 def extract_features(tweet):
-	tweet_words = set(tweet)
+    tweet_words = set(tweet)
     features = {}
     for word in featureList:
-        features['contains(%s)' % word] = (word in tweet_words)
+        features['contains(e%s)' % word] = (word in tweet_words)
     return features
 
 def bulkFeatureExtraction(file):
-	inpTweets = csv.reader(open(str(file), 'rb'), delimiter=',', quotechar='|')
-	stopWords = getStopWordList('stopwords.txt')
-	featureList = []
+    #file = file.decode('utf-8')
 
-	tweets = []
-	for i in range (0, inpTweets[0].length):
-		tweet = row[0][i]
-		sentiment = row[1][i]
-		processedTweet = processTweet(tweet)
-	    featureVector = getFeatureVector(processedTweet, stopWords)
-	    featureList.extend(featureVector)
-	    tweets.append((featureVector, sentiment));
+    stopwordsList = []
+    inpTweets = csv.reader(open(file, 'r'), delimiter=',', quotechar='|')
+    stopWordsList = stopWords('stopwords.txt')
+    featureList = []
+    tweets = []
+
+    inpTweets = list(inpTweets)
+    [tweet.decode('utf-8') for tweet in inpTweets]
+
+    for row in inpTweets:
+        tweet = row[1]
+        sentiment = row[0]
+        processedTweet = processTweet(tweet)
+        featureVector = getFeatureVector(processedTweet, stopWordsList)
+        featureList.extend(featureVector)
+        tweets.append((featureVector, sentiment))
+	# Remove featureList duplicates
+    featureList = list(set(featureList))
+
+	# Extract feature vector for all tweets in one shote
+    training_set = nltk.classify.util.apply_features(extract_features, tweets)
+    print(training_set)
 
 
-
-
-def plot():
+'''def plot():
 	labels = 'Positive', 'Negative'
 	sizes = [.34, .66]
 	colors = ['yellowgreen', 'mediumpurple', 'lightskyblue', 'lightcoral'] 
@@ -91,8 +102,8 @@ def plot():
 	        labels=labels,      # slice labels
 	        colors=colors,      # array of colours
 	        autopct='%1.1f%%',  # print the values inside the wedges
-	        shadow=True,         enable shadow
+	        shadow=True, enable shadow
 	        startangle=70       # starting angle
 	        )
 	plt.axis('equal')
-	plt.savefig('trump.png')
+	plt.savefig('trump.png')'''

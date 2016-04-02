@@ -1,1 +1,1 @@
-# politics_sentiment_analysis
+# Politics sentiment analysis

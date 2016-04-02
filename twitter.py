@@ -14,9 +14,7 @@ auth = tweepy.OAuthHandler(key, secret)
 auth.set_access_token(access, a_secret)
 api = tweepy.API(auth)
 
-def split_text(tweet):
-	sentence = tweet.split()
-	return sentence 
+
 
 def get_trump():
 	media = ['nytimes', 'CNN', 'cnnbrk', 'CNNPolitics', 'cnni']

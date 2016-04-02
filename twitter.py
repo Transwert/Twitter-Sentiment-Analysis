@@ -3,10 +3,7 @@ import csv
 import operator
 
 #override tweepy.StreamListener to add logic to on_status
-key = 'UoOP5xpzbFqCLm3WKEq6VqhPY'
-secret = 'RUPDwPP4cdYvCkfkuOZcX4OofCXcsZRcXxN6BUIoBkYTddVdCj'
-access = '715768598367715329-6QKfskhjRLrC6zmoIHllvL7SXISd522'
-a_secret = 'RouBCcG7hHI4eA0MoaRtiGfX2nvFKoNEvrrAoczhttTGc'
+
 
 auth = tweepy.OAuthHandler( key, secret)
 auth.set_access_token( access, a_secret)
@@ -14,7 +11,9 @@ auth = tweepy.OAuthHandler(key, secret)
 auth.set_access_token(access, a_secret)
 api = tweepy.API(auth)
 
-
+def split_text(tweet):
+	sentence = tweet.split()
+	return sentence 
 
 def get_trump():
 	media = ['nytimes', 'CNN', 'cnnbrk', 'CNNPolitics', 'cnni']
@@ -32,6 +31,11 @@ trump_data = get_trump()
 d = {}
 
 for tweet in trump_data:
+	for word in split_text(tweet.text):
+		if word not in d.keys():
+			d[word] = 1
+		else:
+			d[word] += 1
 d = sorted(d.items(), key=lambda x: (-x[1], x[0]))
 print(d)
 

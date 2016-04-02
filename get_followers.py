@@ -32,11 +32,5 @@ def get_followers_id(screen_name):
 		followers_id.extend(lst)
 	return followers_id
 
-lst = get_followers('J_tsar')
-print(len(lst))
-s = set()
-for i in lst:
-	s.add(i)
-print(len(lst))
 
 

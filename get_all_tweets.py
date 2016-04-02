@@ -23,15 +23,18 @@ def get_all_tweets(screen_name):
 
 	tweets.extend(new_tweets)
 
-	last_tweet = tweets[-1].id - 1
+	if len(tweets) > 0:
+			last_tweet = tweets[-1].id - 1
 	count = 0
 	while len(new_tweets) > 0 and count < 10: 
 		new_tweets = api.user_timeline(screen_name = screen_name,count=200,max_id=last_tweet)
 		tweets.extend(new_tweets)
-		last_tweet = tweets[-1].id - 1
+		if len(tweets) > 0:
+			last_tweet = tweets[-1].id - 1
 		count += 1
 	tweets = [tweet.text.encode("utf-8") for tweet in tweets]
 	return tweets
+
 
 # maps media outlet's screen_name to a list of urls
 # info will be used to do sentiment analysis on the article of that link

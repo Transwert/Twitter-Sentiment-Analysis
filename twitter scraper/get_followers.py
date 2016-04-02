@@ -4,17 +4,7 @@ import operator
 import time
 import get_all_tweets
 
-"""
-key = 'UoOP5xpzbFqCLm3WKEq6VqhPY'
-secret = 'RUPDwPP4cdYvCkfkuOZcX4OofCXcsZRcXxN6BUIoBkYTddVdCj'
-access = '715768598367715329-6QKfskhjRLrC6zmoIHllvL7SXISd522'
-a_secret = 'RouBCcG7hHI4eA0MoaRtiGfX2nvFKoNEvrrAoczhttTGc'
-"""
-key="HfX9vtQ37LoGgcAnOigeqcqRs"
-secret="VHT2CXZrIRvJQCVVKY8VaXFFr20NmQgWfAVeVeKij7Du4pfrIs"
 
-access="703801335980773377-7tiks85kqBaeqd7jc0yxZzfBBEEGM2P"
-a_secret="uwsceG85ug1jCeKeCi1Vab7q5zon1fRaB778qO8z5E5pk"
 
 
 auth = tweepy.OAuthHandler( key, secret)

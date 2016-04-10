@@ -68,21 +68,28 @@ def bulkFeatureExtraction(file):
     #file = file.decode('utf-8')
 
     stopwordsList = []
-    inpTweets = csv.reader(open(file, 'r'), delimiter=',', quotechar='|')
+
+    with open(file, 'r') as f:
+        reader = csv.reader(f)
+        #your_list = list(reader)
+        for row in reader:
+            tweet = row[1]
+            sentiment = row[0]
+            processedTweet = processTweet(tweet)
+            featureVector = getFeatureVector(processedTweet, stopWordsList)
+            featureList.extend(featureVector)e
+            tweets.append((featureVector, sentiment))
+
+
+    #inpTweets = csv.reader(open(file, 'r'))
     stopWordsList = stopWords('stopwords.txt')
     featureList = []
     tweets = []
 
     #inpTweets = list(inpTweets)
-    [tweet.decode('utf-8') for tweet in inpTweets]
+    #[tweet.decode('utf-8') for tweet in inpTweets]
 
-    for row in inpTweets:
-        tweet = row[1]
-        sentiment = row[0]
-        processedTweet = processTweet(tweet)
-        featureVector = getFeatureVector(processedTweet, stopWordsList)
-        featureList.extend(featureVector)
-        tweets.append((featureVector, sentiment))
+    
 	# Remove featureList duplicates
     featureList = list(set(featureList))
 

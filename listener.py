@@ -6,7 +6,7 @@ class SListener(StreamListener):
     def __init__(self, api = None, fprefix = 'streamer'):
         self.api = api or API()
         self.counter = 0
-        self.tweets = open('vas.csv', 'w')
+        self.tweets = open('Trump.csv', 'w')
 
     def on_data(self, data):
         if  'in_reply_to_status' in data:
@@ -19,7 +19,6 @@ class SListener(StreamListener):
 
     def on_status(self, status):
         data = json.loads(status)
-        print(data['lang'])
         if data['text'] != None and data['lang'] == 'en':
             self.tweets.write(data['text'])
         self.counter += 1

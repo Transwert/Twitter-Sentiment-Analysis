@@ -7,7 +7,6 @@ class SListener(StreamListener):
         self.api = api or API()
         self.counter = 0
         self.tweets = open('Trump.csv', 'w')
-        csv_writer = csv.writer(self.tweets)
 
     def on_data(self, data):
         if  'in_reply_to_status' in data:
@@ -21,7 +20,11 @@ class SListener(StreamListener):
     def on_status(self, status):
         data = json.loads(status)
         if data['text'] != None and data['lang'] == 'en':
+<<<<<<< HEAD
             csv_writer.writeRows(['blah'])
+=======
+            self.tweets.write(data['text'])
+>>>>>>> 5ccce66f68a0d05b285ed14bcda76c9ac760302b
         self.counter += 1
         if self.counter >= 20000:
             self.tweets.close()

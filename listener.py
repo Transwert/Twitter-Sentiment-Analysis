@@ -1,5 +1,5 @@
 from tweepy import StreamListener
-import json, time, sys
+import json, time, sys, csv
 
 class SListener(StreamListener):
 

@@ -14,7 +14,8 @@ classify = classifier()
 positive_count = 0
 negative_count = 0
 for i in trump_posts:
-	if(classify(i) == 1):
+	a = classify(i);
+	if( a == '1'):
 		positive_count += 1
 	else:
 		negative_count += 1

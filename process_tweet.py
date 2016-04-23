@@ -1,125 +1,122 @@
 import re
 from langdetect import detect
 import csv
-
-class processTweet(object):
-
-
-    """docstring for ClassName"""
-    def __init__(self, arg):
-        super(ClassName, self).__init__()
-        self.arg = arg
-        self.fileName = 
+import codecs
+import nltk
 
 
-    #def filterEnglish(lists): #filters out words that are not in English
-    #	return [tweet for tweet in lists if detect(tweet) == 'en']
+#def filterEnglish(lists): #filters out words that are not in English
+#	return [tweet for tweet in lists if detect(tweet) == 'en']
+featureList = []
 
-    def processTweet(tweet):
-    	#Convert to lower case
-        tweet = tweet.lower()
-        tweet.decode('utf-8')
-        #Convert www.* or https?://* to URL
-        tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL',tweet)
-        #Convert @username to AT_USER
-        tweet = re.sub('@[^\s]+','AT_USER',tweet)
-        #Remove additional white spaces
-        tweet = re.sub('[\s]+', ' ', tweet)
-        #Replace #word with word
-        tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
-        #trim
-        tweet = tweet.strip('\'"')
-        return tweet
-
-
-    def handleRepeatedLetters(s):
-        #look for 2 or more repetitions of character and replace with 1 repetition of the character itself
-        pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
-        return pattern.sub(r"\1\1", s)
-
-    def stopWords(file):
-        stopWords = []
-        stopWords.append('AT_USER')
-        stopWords.append('URL')
-        fp = open(file, 'r')
-        for line in fp.readline():
-            word = line.strip()
-            stopWords.append(word)
-        fp.close()
-        return stopWords
-
-    def getFeatureVector(tweet):
-        featureVector = []
-        #split tweet into words
-        words = tweet.split()
-        for w in words:
-            #replace more than two with two occurrences
-            w = handleRepeatedLetters(w)
-            #strip punctuation
-            w = w.strip('\'"?,.')
-            #check if the word stats with an alphabet
-            val = re.search(r"^[a-zA-Z][a-zA-Z0-9]*$", w)
-            #ignore if it is a stop word
-            if(w in stopWords or val is None):
-                continue
-            else:
-                featureVector.append(w.lower())
-        return featureVector
+def processTweet(tweet):
+	#Convert to lower case
+    tweet = tweet.lower()
+    #Convert www.* or https?://* to URL
+    tweet = re.sub('((www\.[^\s]+)|(https?://[^\s]+))','URL',tweet)
+    #Convert @username to AT_USER
+    tweet = re.sub('@[^\s]+','AT_USER',tweet)
+    #Remove additional white spaces
+    tweet = re.sub('[\s]+', ' ', tweet)
+    #Replace #word with word
+    tweet = re.sub(r'#([^\s]+)', r'\1', tweet)
+    #trim
+    tweet = tweet.strip('\'"')
+    return tweet
 
 
-    def extract_features(tweet):
-        tweet_words = set(tweet)
-        features = {}
-        for word in featureList:
-            features['contains(e%s)' % word] = (word in tweet_words)
-        return features
+def handleRepeatedLetters(s):
+    #look for 2 or more repetitions of character and replace with 1 repetition of the character itself
+    pattern = re.compile(r"(.)\1{2,}", re.DOTALL)
+    return pattern.sub(r"\1\1", s)
 
-    def bulkFeatureExtraction(file):
-        #file = file.decode('utf-8')
+def stopWords(file):
+    stopWords = []
+    stopWords.append('AT_USER')
+    stopWords.append('URL')
+    fp = open(file, 'r')
+    for line in fp.readline():
+        word = line.strip()
+        stopWords.append(word)
+    fp.close()
+    return stopWords
 
-        stopwordsList = []
+def getFeatureVector(tweet):
+    featureVector = []
+    #split tweet into words
+    words = tweet.split()
+    for w in words:
+        #replace more than two with two occurrences
+        w = handleRepeatedLetters(w)
+        #strip punctuation
+        w = w.strip('\'"?,.')
+        #check if the word stats with an alphabet
+        val = re.search(r"^[a-zA-Z][a-zA-Z0-9]*$", w)
+        #ignore if it is a stop word
+        if(val is None):
+            continue
+        else:
+            featureVector.append(w.lower())
+    return featureVector
 
-        with open(file, 'r') as f:
-            reader = csv.reader(f)
-            #your_list = list(reader)
-            for row in reader:
-                tweet = row[1]
-                sentiment = row[0]
-                processedTweet = processTweet(tweet)
-                featureVector = getFeatureVector(processedTweet, stopWordsList)
-                featureList.extend(featureVector)
-                tweets.append((featureVector, sentiment))
 
+def extract_features(tweet):
+    tweet_words = set(tweet)
+    features = {}
+    for word in featureList:
+        features['contains(e%s)' % word] = (word in tweet_words)
+    return features
 
-        #inpTweets = csv.reader(open(file, 'r'))
-        stopWordsList = stopWords('stopwords.txt')
+#def bulkFeatureExtraction(fileName):
+    #file = file.decode('utf-8')
+
+    stopwordsList = []
+    tweets = []
+
+    with codecs.open(fileName, encoding = 'utf-8', errors = 'replace') as f:
+        reader = csv.reader(f)
         featureList = []
-        tweets = []
+        #your_list = list(reader)
+        for row in reader:
+            tweet = row[1]
+            sentiment = row[0]
+            processedTweet = processTweet(tweet)
+            featureVector = getFeatureVector(processedTweet)
+            featureList.append(featureVector)
+            tweets.append((featureVector, sentiment))
 
-        #inpTweets = list(inpTweets)
-        #[tweet.decode('utf-8') for tweet in inpTweets]
 
+    #inpTweets = csv.reader(open(file, 'r'))
+    #stopWordsList = stopWords('stopwords.txt')
+    
+
+    #inpTweets = list(inpTweets)
+    #[tweet.decode('utf-8') for tweet in inpTweets]
+
+    
+	# Remove featureList duplicates
+    featureList = list(set(featureList))
+
+	# Extract feature vector for all tweets in one shote
+    training_set = nltk.classify.util.apply_features(extract_features, tweets)
+    #print(training_set)
+
+    return training_set
+
+
+def addTweetsToDict(fileName):
+
+    tweets_dictionary = {} #HashMap<String, Integer> 
+
+    with open(file, 'r') as f:
+        reader = csv.reader(f)
         
-    	# Remove featureList duplicates
-        featureList = list(set(featureList))
+        for row in reader:
+            tweet = row[1]
+            sentiment = row[0]
+            tweets_dictionary[tweet] = sentiment
 
-    	# Extract feature vector for all tweets in one shote
-        training_set = nltk.classify.util.apply_features(extract_features, tweets)
-        print(training_set)
-
-    def addTweetsToDict(fileName):
-
-        tweets_dictionary = {} #HashMap<String, Integer> 
-
-        with open(file, 'r') as f:
-            reader = csv.reader(f)
-            
-            for row in reader:
-                tweet = row[1]
-                sentiment = row[0]
-                tweets_dictionary[tweet] = sentiment
-
-        return tweets_dictionary
+    return tweets_dictionary
 
 
 

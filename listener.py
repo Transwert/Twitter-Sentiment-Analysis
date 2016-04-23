@@ -22,6 +22,10 @@ class SListener(StreamListener):
         data = json.loads(status)
         if data['text'] != None and data['lang'] == 'en':
             csv_writer.writeRows(['blah'])
+<<<<<<< HEAD
+=======
+            self.tweets.write(data['text'])
+>>>>>>> 606b55c8e0e132c8069fee02f9e2af268ae43f3e
         self.counter += 1
         if self.counter >= 20000:
             self.tweets.close()

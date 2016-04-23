@@ -23,7 +23,8 @@ class SListener(StreamListener):
             #csv_writer.writeRows(['blah'])
             self.tweets.write(data['text'])
         self.counter += 1
-        if self.counter >= 1000:
+        if self.counter >= 5000:
+            print('Done collecting')
             self.tweets.close()
         return
 

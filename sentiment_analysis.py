@@ -64,13 +64,13 @@ with codecs.open('training_set_better.csv', encoding='utf-8', errors='replace') 
     # testTweet = ''
     # processedTestTweet = processTweet(testTweet)
     # print (NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet))))
-    def classifier():
-        training_set = nltk.classify.util.apply_features(extract_features, tweets)
-        NBClassifier = nltk.NaiveBayesClassifier.train(training_set)
-        def classify(tweet):
-            processedTestTweet = processTweet(tweet)
-            return NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet)))
-        return classify;
+def classifier():
+    training_set = nltk.classify.util.apply_features(extract_features, tweets)
+    NBClassifier = nltk.NaiveBayesClassifier.train(training_set)
+    def classify(tweet):
+        processedTestTweet = processTweet(tweet)
+        return NBClassifier.classify(extract_features(getFeatureVector(processedTestTweet)))
+    return classify;
 
 
 

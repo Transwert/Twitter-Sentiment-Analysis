@@ -23,32 +23,35 @@ def both_sets(reader):
 	#print(total_count)
 	return test_set, training_data, total_count, test_count
 
-with codecs.open('training_set_better.csv', encoding='utf-8', errors='replace') as f:
+f = codecs.open('training_set_better.csv', encoding='utf-8', errors='replace')
+
+reader = csv.reader(f)
+
+
+percentage_list = []
+
+classify = classifier()
+
+
+for i in range(0, 500):
 	reader = csv.reader(f)
+	test_set, training_data, total_count, test_count = both_sets(reader)
 
+	count_right = 0
 
-	percentage_list = []
+	print(total_count)
+	if (test_count != 0):
 
-	classify = classifier()
+		for i in range(0, test_count):
+			if (test_set[i][0] == classify(test_set[i][1])):
 
+				count_right += 1
 
-	for i in range(0, 500):
-		test_set, training_data, total_count, test_count = both_sets(reader)
+		percent_right = (count_right/test_count) * 100
+		percentage_list.append(percent_right)
 
-		count_right = 0
-
-		print(total_count)
-		if (test_count != 0):
-			
-			for i in range(0, test_count):
-				if (test_set[i][0] == classify(test_set[i][1])):
-
-					count_right += 1
-
-			percent_right = (count_right/test_count) * 100
-			percentage_list.append(percent_right)
-
-	print(percentage_list)
-	plt.hist(percentage_list, bins = 20)
-	plt.show()
+	f.seek(0)
+print(percentage_list)
+plt.hist(percentage_list, bins = 20)
+plt.show()
 

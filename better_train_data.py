@@ -13,8 +13,8 @@ def get_data_dict(filename):
             tweets.append(json_dict)
     return tweets
 
-positive_tweets = get_data_dict('training_negative_tweets.json')
-negative_tweets = get_data_dict('training_positive_tweets.json')
+positive_tweets = get_data_dict('Training_Data/training_negative_tweets.json')
+negative_tweets = get_data_dict('Training_Data/training_positive_tweets.json')
 
 positive_text = []
 for tweet in positive_tweets:
@@ -30,7 +30,7 @@ binary_negative = [0 for i in range(len(negative_text))]
 final_lst = list(zip(binary_positive, positive_text))
 final_lst.extend(zip(binary_negative, negative_text))
 
-with open('training_set_better.csv', 'w') as output:
+with open('Training_Data/training_set_better.csv', 'w') as output:
     csv_writer = csv.writer(output)
     for row in final_lst:
         csv_writer.writerow(row)

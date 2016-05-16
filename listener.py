@@ -21,15 +21,7 @@ class SListener(StreamListener):
     def on_status(self, status):
         data = json.loads(status)
         if data['text'] != None and data['lang'] == 'en':
-<<<<<<< HEAD
-            csv_writer.writeRows(['blah'])
-<<<<<<< HEAD
-=======
-=======
-            #csv_writer.writeRows(['blah'])
->>>>>>> 0a858d7f5e96fd4a0fb1dbd511ceba609d0721bf
             self.tweets.write(data['text'])
->>>>>>> 606b55c8e0e132c8069fee02f9e2af268ae43f3e
         self.counter += 1
         if self.counter >= 5000:
             print('Done collecting')

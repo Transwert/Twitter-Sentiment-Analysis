@@ -41,7 +41,7 @@ def getFeatureVector(tweet):
     return featureVector
 #end
 
-with codecs.open('training_set_better.csv', encoding='utf-8', errors='replace') as f:
+with codecs.open('Training_Data/training_set_better.csv', encoding='utf-8', errors='replace') as f:
     inpTweets = csv.reader(f)
     featureList = []
 

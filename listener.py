@@ -6,7 +6,7 @@ class SListener(StreamListener):
     def __init__(self, api = None, fprefix = 'streamer'):
         self.api = api or API()
         self.counter = 0
-        self.tweets = open('Trump.csv', 'w')
+        self.tweets = open('Sanders.csv', 'w')
         csv_writer = csv.writer(self.tweets)
 
     def on_data(self, data):

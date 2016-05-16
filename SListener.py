@@ -15,7 +15,7 @@ auth.set_access_token(access, a_secret)
 api = tweepy.API(auth)
 
 def main():
-    track = ['Trump', 'trump']
+    track = ['Sanders', 'sanders']
  
     listen = SListener(api, 'myprefix')
     stream = tweepy.Stream(auth, listen)
